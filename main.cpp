@@ -1,41 +1,32 @@
 #include <iostream>
+#include <cmath>
 #include <queue>
-#include <vector>
-#include <algorithm>
 using namespace std;
-int adj[101];
+int sq[224],n,k,ans =5;
 queue<pair<int,int>> q;
-bool visited[101];
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
     
-    int n,m,u,v;
-    cin>>n>>m;
-    for(int i=0;i<n+m;i++){
-        cin>>u>>v;
-        adj[u]=v;
+    cin>>n;
+    k = (int)sqrt(n);
+    for(int i=1;i<=k;i++){
+        sq[i]=i*i;
     }
-    q.push({1,0});
+    q.push({n,0});
     while(!q.empty()){
         auto x = q.front();
-        int num=x.first,d=x.second;
+        int num = x.first,d = x.second;
         q.pop();
-        if(!visited[num]) visited[num]=true;
-        else continue;
-        if(num==100){
-            cout<< d;
-            return 0;
+        int p = (int)sqrt(num);
+        if(sq[p]==num){
+            ans = d+1;
+            break;
         }
-        for(int i=1;i<7;i++){
-            if(num+i<101){
-                if(adj[num+i]>0){
-                    q.push({adj[num+i],d+1});
-                }else{
-                    q.push({num+i,d+1});
-                }
-            }
+        for(int i=p;i>0;i--){
+            q.push({num-sq[i],d+1});
         }
     }
+    cout<<ans;
 }
