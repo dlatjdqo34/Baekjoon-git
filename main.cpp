@@ -1,32 +1,45 @@
 #include <iostream>
+#include <vector>
 #include <cmath>
-#include <queue>
 using namespace std;
-int sq[224],n,k,ans =5;
-queue<pair<int,int>> q;
+int ans[1000000],res = 50000000,n,m;
+vector<int> v;
+void DFS(int g, int d){
+    if(g==0){
+        ans[0] = 1 + n;
+        if(res > ans[0]) res = ans[0];
+        return;
+    }
+    if(g != 100){
+        ans[g] = d + abs(n-g);
+        if(res > ans[g]) res = ans[g];
+    }
+    if(d<6){
+        for(int i : v){
+            DFS(10*g+i,d+1);
+        }
+    }
+}
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
     
-    cin>>n;
-    k = (int)sqrt(n);
-    for(int i=1;i<=k;i++){
-        sq[i]=i*i;
+    bool button[10]={};
+    cin>>n>>m;
+    for(int i=0;i<m;i++){
+        int b;
+        cin>>b;
+        button[b]=true;
     }
-    q.push({n,0});
-    while(!q.empty()){
-        auto x = q.front();
-        int num = x.first,d = x.second;
-        q.pop();
-        int p = (int)sqrt(num);
-        if(sq[p]==num){
-            ans = d+1;
-            break;
-        }
-        for(int i=p;i>0;i--){
-            q.push({num-sq[i],d+1});
-        }
+    for(int i=0;i<10;i++){
+        if(!button[i])
+            v.push_back(i);
     }
-    cout<<ans;
+    ans[100] = abs(n-100);
+    if(res > ans[100]) res = ans[100];
+    for(int i : v){
+        DFS(i, 1);
+    }
+    cout << res;
 }
