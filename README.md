@@ -1,2 +1,2 @@
 # Baekjoon-git
-Baekjoon Code Collection
+Baekjoon Code Collection [C++]
